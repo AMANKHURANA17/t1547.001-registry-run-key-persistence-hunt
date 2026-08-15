@@ -12,3 +12,9 @@ The attacker may:
    - Place malicious executables, scripts, shortcuts, or other payloads in Windows Startup Folders.
    - Configure malicious or unsigned processes to execute automatically when a user logs on.
 
+3. **Use `reg.exe` to modify Registry Run Keys**
+   - Use `reg.exe add` to create or modify `Run` or `RunOnce` registry keys for persistence.
+   - Configure the registry value with a `REG_SZ` command or payload that executes during user logon.
+
+
+
