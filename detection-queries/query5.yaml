@@ -1,0 +1,31 @@
+title: PowerShell WMI StdRegProv Registry Run Key Modification
+id: 3e7a91c4-52b8-46d1-a9f3-7c8e25b60412
+status: experimental
+description: |
+  Detects PowerShell usage of WMI StdRegProv to access or modify Windows
+  Registry Run keys, which may indicate an attempt to establish persistence.
+author: Aman Khurana
+date: 2026-08-15
+tags:
+  - attack.persistence
+  - attack.t1547.001
+
+logsource:
+  product: windows
+  category: ps_script
+
+detection:
+  selection:
+    ScriptBlockText|contains|all:
+      - 'Get-WmiObject'
+      - 'StdRegProv'
+      - 'CurrentVersion\Run'
+
+  condition: selection
+
+falsepositives:
+  - Legitimate administrative PowerShell scripts.
+  - Enterprise management and configuration tools.
+  - Software deployment or troubleshooting scripts.
+
+level: medium
