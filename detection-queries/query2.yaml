@@ -1,0 +1,28 @@
+title: Unsigned Process Executed from Windows Startup Folder
+id: 5d7c9a21-3e64-4f18-b6a2-91d8c7e45f30
+status: experimental
+description: |
+  Detects execution of unsigned processes from the Windows Startup Folder,
+  which may indicate abuse of the Startup Folder for persistence.
+author: Aman Khurana
+date: 2026-08-15
+tags:
+  - attack.persistence
+  - attack.t1547.001
+
+logsource:
+  product: windows
+  category: process_creation
+
+detection:
+  selection:
+    Image|contains: '\Start Menu\Programs\Startup'
+    Signed: 'false'
+
+  condition: selection
+
+falsepositives:
+  - Legitimate unsigned applications configured to launch at user logon.
+  - Organization-specific software deployed through the Startup Folder.
+
+level: medium
