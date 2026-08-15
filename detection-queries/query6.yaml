@@ -1,0 +1,36 @@
+title: Suspicious Rundll32 Execution Configured in Registry Run Keys
+id: 6b2e94d7-81c5-43fa-a672-9c7e15b30428
+status: experimental
+description: |
+  Detects Registry Run Key modifications that configure rundll32.exe to
+  execute a DLL during user logon, which may indicate DLL-based persistence.
+author: Aman Khurana
+date: 2026-08-15
+tags:
+  - attack.persistence
+  - attack.t1547.001
+  - attack.execution
+  - attack.t1218.011
+
+logsource:
+  product: windows
+  category: registry_set
+
+detection:
+  selection:
+    TargetObject|contains: '\CurrentVersion\Run'
+    Details|contains: 'rundll32'
+
+  filter_system32:
+    Details|contains:
+      - '\System32'
+      - '\SysWOW'
+
+  condition: selection and not filter_system32
+
+falsepositives:
+  - Legitimate software installers configuring DLL execution at startup.
+  - Printer and device software.
+  - Enterprise software that legitimately uses rundll32.exe.
+  
+level: high
