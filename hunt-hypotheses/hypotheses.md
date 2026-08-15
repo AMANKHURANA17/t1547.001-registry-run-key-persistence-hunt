@@ -16,5 +16,10 @@ The attacker may:
    - Use `reg.exe add` to create or modify `Run` or `RunOnce` registry keys for persistence.
    - Configure the registry value with a `REG_SZ` command or payload that executes during user logon.
 
+4. **Use PowerShell or .NET-based scripts to modify Registry Run Keys**
+   - Use PowerShell cmdlets such as `Set-ItemProperty` or `New-ItemProperty` to create or modify Registry Run/RunOnce keys.
+   - Use .NET-based registry manipulation to establish persistence through existing or newly created Run Keys.
+
+
 
 
