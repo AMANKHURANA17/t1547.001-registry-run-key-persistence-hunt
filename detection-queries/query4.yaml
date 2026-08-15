@@ -1,0 +1,34 @@
+title: PowerShell Registry Run Key Modification
+id: 7a3e91c5-6f24-4d82-b8a1-52c7e9f43610
+status: experimental
+description: |
+  Detects PowerShell commands using Set-ItemProperty or New-ItemProperty
+  to create or modify Windows Registry Run keys, which may indicate
+  persistence through Registry Run Keys.
+author: Aman Khurana
+date: 2026-08-15
+tags:
+  - attack.persistence
+  - attack.t1547.001
+
+logsource:
+  product: windows
+  category: ps_script
+
+detection:
+  selection_run_key:
+    ScriptBlockText|contains: 'CurrentVersion\Run'
+
+  selection_registry_modification:
+    ScriptBlockText|contains:
+      - 'Set-ItemProperty'
+      - 'New-ItemProperty'
+
+  condition: selection_run_key and selection_registry_modification
+
+falsepositives:
+  - Legitimate administrative PowerShell scripts.
+  - Software installation and configuration scripts.
+  - Enterprise management tools modifying startup configuration.
+
+level: medium
