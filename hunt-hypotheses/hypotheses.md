@@ -20,6 +20,11 @@ The attacker may:
    - Use PowerShell cmdlets such as `Set-ItemProperty` or `New-ItemProperty` to create or modify Registry Run/RunOnce keys.
    - Use .NET-based registry manipulation to establish persistence through existing or newly created Run Keys.
 
+5. **Use WMI StdRegProv to modify Registry Run Keys**
+   - Use PowerShell and WMI `StdRegProv` to create or modify Registry Run/RunOnce keys for persistence.
 
+6. **Add malicious DLLs to Registry Run Keys**
+   - Configure Registry Run/RunOnce keys to execute DLL payloads using `rundll32.exe`.
+   - Abuse DLL execution through Registry Run Keys to establish persistence.
 
 
