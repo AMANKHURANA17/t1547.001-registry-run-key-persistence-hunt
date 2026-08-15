@@ -1,0 +1,32 @@
+title: Registry Run Key Modification Using Reg.exe
+id: 2f6a8d41-7c93-4b15-ae62-91d5e83f704c
+status: stable
+description: |
+  Detects the use of reg.exe to create or modify Windows Registry Run or
+  RunOnce keys, which may indicate an attempt to establish persistence.
+author: Aman Khurana
+date: 2026-08-15
+tags:
+  - attack.persistence
+  - attack.t1547.001
+
+logsource:
+  product: windows
+  category: process_creation
+
+detection:
+  selection:
+    Image|endswith: '\reg.exe'
+    CommandLine|contains|all:
+      - 'add'
+      - 'currentversion\run'
+      - 'reg_sz'
+
+  condition: selection
+
+falsepositives:
+  - Legitimate software installers and configuration utilities.
+  - Enterprise management or deployment tools.
+  - Administrative scripts modifying legitimate startup configuration.
+
+level: medium
