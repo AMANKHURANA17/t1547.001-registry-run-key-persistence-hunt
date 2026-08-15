@@ -1,0 +1,55 @@
+title: Suspicious Registry Run Key Persistence Using Scripts or Command Interpreters
+id: 8c5f4b7a-2d91-4e63-9a21-7b8d4c1f6e32
+status: experimental
+description: |
+    Detects modifications to Windows Registry Run keys where the configured
+    value references a script-based file or a command/script interpreter.
+    Attackers may abuse Registry Run Keys for persistence by executing
+    malicious scripts or command interpreters during system or user startup.
+references:
+    - https://attack.mitre.org/techniques/T1547/001/
+author: Detection Engi
+date: 2026-08-15
+tags:
+    - attack.persistence
+    - attack.t1547.001
+
+logsource:
+    product: windows
+    category: registry_set
+
+detection:
+    selection_run_key:
+        TargetObject|contains:
+            - '\CurrentVersion\Run'
+            - '\CurrentVersion\RunOnce'
+            - '\CurrentVersion\RunServices'
+            - '\CurrentVersion\RunServicesOnce'
+
+    selection_script:
+        Details|contains:
+            - '.cmd'
+            - '.bat'
+            - '.ps1'
+            - '.js'
+            - '.vbs'
+            - '.py'
+
+    selection_interpreter:
+        Details|contains:
+            - 'powershell'
+            - 'wscript'
+            - 'cscript'
+            - 'mshta'
+            - 'python'
+            - 'perl'
+            - 'ruby'
+
+    condition: selection_run_key and (selection_script or selection_interpreter)
+
+falsepositives:
+    - Legitimate software configured to execute at startup.
+    - Enterprise management or deployment software.
+    - Legitimate administrative scripts configured for startup execution.
+
+level: medium
