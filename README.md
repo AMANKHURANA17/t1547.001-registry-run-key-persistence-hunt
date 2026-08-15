@@ -1,0 +1,1 @@
+# t1547.001-registry-run-key-persistence-hunt
